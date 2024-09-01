@@ -7,4 +7,4 @@ Habrian  5 tipos diferentes de caramelos, cada uno con un color distinto: carame
 
 Se encontrara el puntaje que se vaya haciendo en la parte superior que ocupara 16 pixeles de alto, y el resto de la pantalla estara dividida en 8 columnas, serian 8 caramelos de alto de 14 pixeles y 8 de largo de 16 pixeles, tener en cuenta que va a haber algun tipo de separacion en gris en el interior de cada division, esto significa que el caramelo no va a ser de 16 x 14 exactamente, será de 9 x 9.
 
-![Image](https://github.com/user-attachments/assets/946378af-aafc-4a4a-829d-0ebbb7b63213)
+![candycrush](https://github.com/user-attachments/assets/066d4a1f-8d48-410d-9352-7e60ae0285be)
