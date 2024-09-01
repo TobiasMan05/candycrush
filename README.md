@@ -3,8 +3,8 @@ El juego Candy Crush consiste en combinar al menos tres caramelos del mismo tipo
 
 El control de desplazamineto seria a traves del uso del mouse para la derecha,izquierda, arriba y abajo.
 
-Habrian  5 tipos diferentes de caramelos, cada uno con un color distinto: caramelo rojo, caramelo verde, caramelo azul, caramelo amarillo y caramelo rosa. Cada vez que se consiga unir 3 iguales seran 200 puntos, si se unen 4, sera 200 x 2, si se unen 5 seria 200 x 3 y asi sucesivamente.
+Habrian  5 tipos diferentes de caramelos, cada uno con un color distinto: caramelo rojo, caramelo verde, caramelo azul, caramelo amarillo y caramelo rosa. 
 
-Se encontrara el puntaje que se vaya haciendo en la parte superior que ocupara 16 pixeles de alto, y el resto de la pantalla estara dividida en 8 columnas, serian 8 caramelos de alto de 14 pixeles y 8 de largo de 16 pixeles, tener en cuenta que va a haber algun tipo de separacion en gris en el interior de cada division, esto significa que el caramelo no va a ser de 16 x 14 exactamente, será de 9 x 9.
+La tabla es de 128 x 124, tiene 8 columnas y 8 filas, en la parte superior hay 3 pixeles de altura de color negro y en la parte inferior 2. Cada caramelos es de 9 x 9, la altura de cada cuadrado es de 15 y la anchura de 16.
 
 ![candycrush](https://github.com/user-attachments/assets/066d4a1f-8d48-410d-9352-7e60ae0285be)
