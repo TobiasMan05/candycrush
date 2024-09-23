@@ -42,6 +42,7 @@ ST R0, SAVEE_R0
 ST R3, SAVEE_R3
 ST R5, SAVEE_R5
 ST R6, SAVEE_R6
+ST R2, SAVEE_R2
 ;R0 posicion caramelo
 ;R1 color
 LD R3, linea
@@ -78,7 +79,7 @@ LD R3, SAVEE_R3
 LD R4, SAVEE_R4
 LD R5, SAVEE_R5
 LD R6, SAVEE_R6
-
+LD R2, SAVEE_R2
 RET
 
 
@@ -95,8 +96,8 @@ SKIP
 ST R2, SAVEE_R2
 ST R5, SAVEE_R5
 ST R7, SAVEE_R7
-LD R3, dieciseis
 
+LD R3, dieciseis
 LD R5, linea
 LD R6, ancho_pantalla
 LD R7, ancho
@@ -133,6 +134,7 @@ SAVEE_R6 	.BLKW 1
 SAVEE_R7 	.BLKW 1
 
 MAIN
+
 LD R2, start_seleccion
 ESPERALETRA
 LDI R5,WAITKB
@@ -175,7 +177,7 @@ BRnzp ESPERALETRA
 
 IZQUIERDA
 ADD R5,R5,#-1
-;BRz INTERCAMBIAR_IZQ
+BRz INTERCAMBIAR_IZQ
 JSR BORRAR
 ADD R2,R2,#-15
 ADD R2,R2,#-1
@@ -183,6 +185,8 @@ JSR SELECCION
 BRnzp ESPERALETRA
 
 ABAJO
+ADD R5,R5,#-1
+BRz INTERCAMBIAR_ABAJO
 JSR BORRAR
 LD R4, salto_selec
 ADD R2,R2,R4
@@ -190,6 +194,8 @@ JSR SELECCION
 BRnzp ESPERALETRA
 
 ARRIBA
+ADD R5,R5,#-1
+BRz INTERCAMBIAR_ARRIBA
 JSR BORRAR
 LD R4, salto_selec_neg
 ADD R2,R2,R4
@@ -213,10 +219,79 @@ ADD R0,R0,#1
 LD R1,negro
 ADD R1,R1,R6
 JSR CREAR_CARAMELO
+JSR SELECCION
+BRnzp ESPERALETRA
+
+
+INTERCAMBIAR_IZQ
+LD R5, saber_color ;para saber color
+ADD R5,R2,R5
+LDR R6,R5,#0
+ADD R5,R5,#-15
+LDR R5,R5,#0
+LD R0,negro ;darle valor 0
+LD R4, seleccion2gris
+ADD R0,R4,R2
+LD R1,negro ;darle valor 0
+ADD R1,R1,R5
+JSR CREAR_CARAMELO
+ADD R0,R0,#-16
+LD R1,negro
+ADD R1,R1,R6
+JSR CREAR_CARAMELO
+JSR SELECCION
+BRnzp ESPERALETRA
+
+INTERCAMBIAR_ABAJO
+LD R5, saber_color ;para saber color
+LD R7, saber_color_abajo
+LD R3, salto_selec
+ADD R5,R2,R5
+LDR R6,R5,#0
+ADD R5,R5,R7
+LDR R5,R5,#0
+LD R0,negro ;darle valor 0
+LD R4, seleccion2gris
+ADD R0,R4,R2
+LD R1,negro ;darle valor 0
+ADD R1,R1,R5
+JSR CREAR_CARAMELO
+ADD R0,R0,R3
+LD R1,negro
+ADD R1,R1,R6
+JSR CREAR_CARAMELO
+JSR SELECCION
+BRnzp ESPERALETRA
+
+INTERCAMBIAR_ARRIBA
+LD R5, saber_color ;para saber color
+LD R7, saber_color_arriba
+LD R3, salto_selec_neg
+ADD R5,R2,R5
+LDR R6,R5,#0
+ADD R5,R2,R7
+LDR R5,R5,#0
+
+LD R0,negro ;darle valor 0
+LD R4, seleccion2gris
+ADD R0,R4,R2
+LD R1,negro ;darle valor 0
+ADD R1,R1,R5
+JSR CREAR_CARAMELO
+ADD R0,R0,R3
+LD R1,negro
+ADD R1,R1,R6
+JSR CREAR_CARAMELO
+JSR SELECCION
 BRnzp ESPERALETRA
 
 
 CAMBIO_CARAMELO
+ADD R5,R5,#-1
+BRnp seguir
+JSR SELECCION
+BRnzp ESPERALETRA
+seguir
 LD R5, dieciseis
 ADD R5,R5,#-15 ;para q la flag valga 1
 ST R5,SAVEE_R5
@@ -255,4 +330,8 @@ letraWneg .FILL #-119
 letraWpos .FILL #119
 teclaENTneg .FILL #-10
 saber_color .FILL #389
+saber_color_abajo .FILL #2180
+saber_color_arriba .FILL #-509
 WAITKB .FILL xFE00
+
+
