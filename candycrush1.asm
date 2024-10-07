@@ -153,17 +153,7 @@ SAVEE_R5  .BLKW 1
 SAVEE_R6  .BLKW 1           
 SAVEE_R7  .BLKW 1           
 
-; Seccion principal del programa
-
-letraDneg .FILL #-100
-letraDpos .FILL #100
-letraAneg .FILL #-97
-letraApos .FILL #97
-letraSneg .FILL #-115
-letraSpos .FILL #115
-letraWneg .FILL #-119
-letraWpos .FILL #119
-
+; seccion principal del programa
 MAIN
     LD R2, start_seleccion     ; inicio seleccion (xC100)
 ESPERALETRA
@@ -247,47 +237,62 @@ ARRIBA
     LD R4, salto_selec_neg         ; le da el valor -1920 
     ADD R2, R2, R4                 ; suma a la pocision -1920 (para subir 15 pixeles)
     JSR SELECCION                  
-    BRnzp ESPERALETRA      
+    BRnzp ESPERALETRA             
 
+; intercambio hacia la Derecha del caramelo
 INTERCAMBIAR_DER
-LD R5, saber_color ;para saber color
-ADD R5,R2,R5
-LDR R6,R5,#0
-ADD R5,R5,#15
-LDR R5,R5,#0
-LD R0,negro ;darle valor 0
-LD R4, seleccion2gris
-ADD R0,R4,R2
-LD R1,negro ;darle valor 0
-ADD R1,R1,R5
-JSR CREAR_CARAMELO
-ADD R0,R0,#15
-ADD R0,R0,#1
-LD R1,negro
-ADD R1,R1,R6
-JSR CREAR_CARAMELO
-JSR SELECCION
-BRnzp ESPERALETRA
+    LD R5, saber_color              ; le da el valor 389 (128 + 128 + 128 + 5)
+    ADD R5, R2, R5                  ; suma a la pocision 389 para saber el color del caramelo donde esta 
+    LDR R6, R5, #0                  ; guarda el color en R6
 
+    ADD R5, R5, #15                 ; mueve a la derecha 15 lugares R5
+    LDR R5, R5, #0                  ; carga el color en R5 del caramelo de la derecha 
 
+    LD R0, negro                    ; le da valor x0000 a R0
+    LD R4, seleccion2gris           ; carga 129 (128 + 1)
+    ADD R0, R4, R2                  ; guarda en R0 la posicion R2 mas R4
+
+    LD R1, negro                    ; le da valor x0000 a R1 
+    ADD R1, R1, R5                  ; le da a R1 el color del caramelo de la derecha 
+
+    JSR CREAR_CARAMELO              ; llama a crear caramelo con el nuevo color que estaba en la derecha y lo vuelve a pintar
+
+    ADD R0, R0, #15                 
+    ADD R0, R0, #1                  ; le suma 16 a la posicion
+
+    LD R1, negro                    ; le da valor x0000 a R1 
+    ADD R1, R1, R6                  ; le da a R1 el color del caramelo que habia en donde se estaba antes 
+
+    JSR CREAR_CARAMELO              ; llama a crear caramelo con el nuevo color que estaba en la posiciopn anterior y lo vuelve a pintar en la derecha 
+    JSR SELECCION                   
+    BRnzp ESPERALETRA               ; sigue esperando letra
+
+; Intercambio hacia la Izquierda del caramelo (funciona igual que el derecho pero restando en las posiciones)
 INTERCAMBIAR_IZQ
-LD R5, saber_color ;para saber color
-ADD R5,R2,R5
-LDR R6,R5,#0
-ADD R5,R5,#-15
-LDR R5,R5,#0
-LD R0,negro ;darle valor 0
-LD R4, seleccion2gris
-ADD R0,R4,R2
-LD R1,negro ;darle valor 0
-ADD R1,R1,R5
-JSR CREAR_CARAMELO
-ADD R0,R0,#-16
-LD R1,negro
-ADD R1,R1,R6
-JSR CREAR_CARAMELO
-JSR SELECCION
-BRnzp ESPERALETRA
+    LD R5, saber_color             
+    ADD R5, R2, R5                 
+    LDR R6, R5, #0
+    
+    ADD R5, R5, #-15                ; resta 15 para saber el color de la isquierda
+    LDR R5, R5, #0 
+    
+    LD R0, negro                    
+    LD R4, seleccion2gris               
+    ADD R0, R4, R2  
+    
+    LD R1, negro                    
+    ADD R1, R1, R5  
+    
+    JSR CREAR_CARAMELO   
+    
+    ADD R0, R0, #-16                ; le resta 16 a la posicion
+    
+    LD R1, negro                    
+    ADD R1, R1, R6    
+    
+    JSR CREAR_CARAMELO              
+    JSR SELECCION                  
+    BRnzp ESPERALETRA   
 
 INTERCAMBIAR_ABAJO
 LD R5, saber_color ;para saber color
