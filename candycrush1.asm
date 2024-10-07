@@ -1,80 +1,86 @@
 .ORIG x3000	 
 
-	LD R0, start   
-LD R3, dieciseis
-LD R4, ancho
-ADD R4, R4, #-6 ;R4=8
+LD R0, start    ; posicion inicial = xC181
+LD R3, dieciseis ; R3 = 16
+LD R4, ancho    ; R4 = 14 (ancho de una linea de caramelos)
+ADD R4, R4, #-6 ; cantidad de filas (R4 = 8)
 
 LOOP_CANDY
-LD R1, rojo
-JSR CREAR_CARAMELO
-ADD R0, R0, R3
-LD R1, azul
-JSR CREAR_CARAMELO
-ADD R0, R0, R3
-LD R1, verde
-JSR CREAR_CARAMELO
-ADD R0, R0, R3
-LD R1, rosa
-JSR CREAR_CARAMELO
-ADD R0, R0, R3
-LD R1, amarillo
-JSR CREAR_CARAMELO
-ADD R0, R0, R3
-LD R1, rojo
-JSR CREAR_CARAMELO
-ADD R0, R0, R3
-LD R1, verde
-JSR CREAR_CARAMELO
-ADD R0, R0, R3
-LD R1, rosa
-JSR CREAR_CARAMELO
-LD R2, salto
-ADD R0,R0,R2
-ADD R4,R4, #-1
-BRp LOOP_CANDY
-BRnzp MAIN
+; bucle para crear caramelos de diferentes colores
 
+LD R1, rojo     ;cargar el color rojo en R1
+JSR CREAR_CARAMELO 
+ADD R0, R0, R3 ;avanza la posicion 16 unidades 
+LD R1, azul     
+JSR CREAR_CARAMELO
+ADD R0, R0, R3
+LD R1, verde    
+JSR CREAR_CARAMELO
+ADD R0, R0, R3
+LD R1, rosa     
+JSR CREAR_CARAMELO
+ADD R0, R0, R3
+LD R1, amarillo 
+JSR CREAR_CARAMELO
+ADD R0, R0, R3
+LD R1, rojo     
+JSR CREAR_CARAMELO
+ADD R0, R0, R3
+LD R1, verde    
+JSR CREAR_CARAMELO
+ADD R0, R0, R3
+LD R1, rosa     
+JSR CREAR_CARAMELO
 
+LD R2, salto    ; salto entre filas de caramelos
+ADD R0, R0, R2 ; mueve R0 a la siguiente fila de caramelos
+ADD R4, R4, #-1 ; decrementa el contador de filas (8)
+BRp LOOP_CANDY  
+BRnzp MAIN      ; finaliza el bucle y salta a MAIN
+
+; crear un caramelo
 CREAR_CARAMELO
-ST R4, SAVEE_R4
+ST R4, SAVEE_R4 
 ST R0, SAVEE_R0
 ST R3, SAVEE_R3
 ST R5, SAVEE_R5
 ST R6, SAVEE_R6
 ST R2, SAVEE_R2
-;R0 posicion caramelo
-;R1 color
-LD R3, linea
-LD R4, gris
-LD R5, ancho
-LD R6, candy
+
+LD R3, linea    ; salto entre lineas = 114 (128 - 14)
+LD R4, gris     ; color gris de fondo
+LD R5, ancho    ; ancho del caramelo (14)
+LD R6, candy    ; lo que suma para ir a la posicion del caramelos (258 = 128 + 128 + 2)
 ADD R6,R0,R6
 
+; Dibuja el borde gris del caramelo
 LOOP2
-LD R2, ancho
+LD R2, ancho    ; ancho del caramelo
 LOOP
-STR R4,R0,#0
-ADD R0,R0,#1
-ADD R2,R2,#-1
-BRp LOOP
-ADD R0,R0,R3
-ADD R5,R5,#-1
-BRp LOOP2
+STR R4, R0, #0      
+ADD R0, R0, #1  
+ADD R2, R2, #-1 
+BRp LOOP        
+ADD R0, R0, R3  ; mueve al siguiente renglon
+ADD R5, R5, #-1 
+BRp LOOP2       
 
-ADD R5,R5,#10
+; Dibuja el color principal del caramelo
+ADD R5, R5, #10 ; altura del caramelo (10)
 LOOP3
-ADD R2,R2,#10
+ADD R2, R2, #10 ; ancho del color (10)
 LOOP4
-STR R1,R6,#0
-ADD R6,R6,#1
-ADD R2,R2,#-1
-BRp LOOP4
-ADD R6,R6,R3
-ADD R6,R6,#4
-ADD R5,R5,#-1
-BRp LOOP3
-LD R0, SAVEE_R0
+STR R1, R6, #0  ; dibuja el caramelo en el color definido por R1
+ADD R6, R6, #1  
+ADD R2, R2, #-1 
+BRp LOOP4       
+ADD R6, R6, R3  ; mueve al siguiente renglon
+ADD R6, R6, #4   
+ADD R5, R5, #-1 
+BRp LOOP3       
+
+; restaurar registros
+LD R0, SAVEE_R0 
 LD R3, SAVEE_R3
 LD R4, SAVEE_R4
 LD R5, SAVEE_R5
