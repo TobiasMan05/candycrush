@@ -292,64 +292,79 @@ INTERCAMBIAR_IZQ
     
     JSR CREAR_CARAMELO              
     JSR SELECCION                  
-    BRnzp ESPERALETRA   
+    BRnzp ESPERALETRA               
 
+; Intercambio hacia Abajo del caramelo 
 INTERCAMBIAR_ABAJO
-LD R5, saber_color ;para saber color
-LD R7, saber_color_abajo
-LD R3, salto_selec
-ADD R5,R2,R5
-LDR R6,R5,#0
-ADD R5,R5,R7
-LDR R5,R5,#0
-LD R0,negro ;darle valor 0
-LD R4, seleccion2gris
-ADD R0,R4,R2
-LD R1,negro ;darle valor 0
-ADD R1,R1,R5
-JSR CREAR_CARAMELO
-ADD R0,R0,R3
-LD R1,negro
-ADD R1,R1,R6
-JSR CREAR_CARAMELO
-JSR SELECCION
-BRnzp ESPERALETRA
+    LD R5, saber_color              ; le da el valor 389 (128 + 128 + 128 + 5)
+    LD R7, saber_color_abajo        ; carga 2180 para saber el color de abajo (128 x 17 + 4)
+    LD R3, salto_selec              ; carga el valor para el salto de seleccion hacia abajo (1920 = 128 x 15)
 
+    ADD R5, R2, R5                  ; guarda en R5 la pocision en el color del caramelo donde esta 
+    LDR R6, R5, #0                  ; guarda el color en R6
+
+    ADD R5, R5, R7                  ; mueve hacia abajo R5 para saber el color del caramelo de abajo
+    LDR R5, R5, #0                  ; guarda el color en R5
+
+    LD R0, negro                    ; le da valor x0000 a R0
+    LD R4, seleccion2gris           ; carga 129 (128 + 1)
+    ADD R0, R4, R2                  ; guarda en R0 la posicion R2 mas R4
+
+    LD R1, negro                    ; le da valor x0000 a R0
+    ADD R1, R1, R5                  ; le da a R1 el color del caramelo de abajo
+
+    JSR CREAR_CARAMELO              ; llama a crear caramelo con el nuevo color que estaba abajo y lo vuelve a pintar
+
+    ADD R0, R0, R3                  ; ajusta la seleccion, R3 = (1920 = 128 x 15)
+    LD R1, negro                    ; le da valor x0000 a R1 
+    ADD R1, R1, R6                  ; le da a R1 el color que estaba en la anterior posicion
+
+    JSR CREAR_CARAMELO              
+    JSR SELECCION                   
+    BRnzp ESPERALETRA               ; espera otras entradas
+
+; Intercambio hacia Arriba (lo mismo que el de intercambio hacia abajo pero con otros valores de movimientos)
 INTERCAMBIAR_ARRIBA
-LD R5, saber_color ;para saber color
-LD R7, saber_color_arriba
-LD R3, salto_selec_neg
-ADD R5,R2,R5
-LDR R6,R5,#0
-ADD R5,R2,R7
-LDR R5,R5,#0
+    LD R5, saber_color             
+    LD R7, saber_color_arriba      
+    LD R3, salto_selec_neg         ; carga el valor para el salto de seleccion hacia arrriba (-1920 = 128 x -15)
 
-LD R0,negro ;darle valor 0
-LD R4, seleccion2gris
-ADD R0,R4,R2
-LD R1,negro ;darle valor 0
-ADD R1,R1,R5
-JSR CREAR_CARAMELO
-ADD R0,R0,R3
-LD R1,negro
-ADD R1,R1,R6
-JSR CREAR_CARAMELO
-JSR SELECCION
-BRnzp ESPERALETRA
+    ADD R5, R2, R5                 
+    LDR R6, R5, #0         
+    
+    ADD R5, R2, R7               
+    LDR R5, R5, #0              
+
+    LD R0, negro                    
+    LD R4, seleccion2gris          
+    ADD R0, R4, R2                 
+
+    LD R1, negro                    
+    ADD R1, R1, R5                 
+
+    JSR CREAR_CARAMELO              
+
+    ADD R0, R0, R3                 
+    LD R1, negro                   
+    ADD R1, R1, R6                  
+
+    JSR CREAR_CARAMELO              
+    JSR SELECCION                   
+    BRnzp ESPERALETRA               ; espera otras entradas
 
 
 CAMBIO_CARAMELO
-ADD R5,R5,#-1
-BRnp seguir
-JSR SELECCION
-BRnzp ESPERALETRA
-seguir
-LD R5, dieciseis
-ADD R5,R5,#-15 ;para q la flag valga 1
-ST R5,SAVEE_R5
-JSR ENTER_SELECCION
-BRnzp ESPERALETRA
-BRzp CAMBIO_CARAMELO
+    ADD R5,R5,#-1 
+    BRnp seguir   ;mientras sea positivo o 0
+    JSR SELECCION
+    BRnzp ESPERALETRA
+    seguir
+    LD R5, dieciseis
+    ADD R5,R5,#-15 ;para q la flag valga 1
+    ST R5,SAVEE_R5
+    JSR ENTER_SELECCION
+    BRnzp ESPERALETRA
+    BRzp CAMBIO_CARAMELO
 
 candy .FILL #258
 dieciseis .FILL #16
@@ -385,5 +400,4 @@ saber_color .FILL #389
 saber_color_abajo .FILL #2180
 saber_color_arriba .FILL #-509
 WAITKB .FILL xFE00
-
 
