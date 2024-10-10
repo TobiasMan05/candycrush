@@ -401,3 +401,23 @@ saber_color_abajo .FILL #2180
 saber_color_arriba .FILL #-509
 WAITKB .FILL xFE00
 
+VER_DERECHA
+LD R2, GUARDAR_AUX_R2
+ST R2, GUARDAR_AUX_R2
+LD R5, saber_color ;para saber color
+LD R0, negro
+LD R1, negro
+LD R3, negro
+
+ADD R5,R2,R5
+LD R6, GUARDAR_AUX_R6
+
+ADD R5, R5, #15
+ADD R5, R5, #1
+
+LDR R1,R5,#0
+NOT R1,R1
+ADD R1,R1,#1
+ADD R7,R1,R6
+
+
