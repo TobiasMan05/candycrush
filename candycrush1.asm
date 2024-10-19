@@ -489,29 +489,28 @@ ADD R7,R1,R6					;guarda en R7 la suma (si es 0 son iguales)
 BRnp VER_ABAJO2					;si no da 0 va a VER_ABAJO2
 ADD R0,R0,#1					;suma uno al contador si R7 es 0 
 
-VER_ABAJO2
-ADD R5,R5,R4
+VER_ABAJO2						; mira los caramelos de abajo de R2 q es donde esta la seleccion
+ADD R5,R5,R4					; suma 1920 para bajar 1 caramelo
 VER_ABAJO1
-ADD R5,R5,R4
+ADD R5,R5,R4					;suma otra vez 1920 para bajar otro caramelo
 
-LD R1, negro
+LD R1, negro					;reseta R1 a x0000
 
-ADD R5,R5,R4
-LDR R3,R5,#0
-NOT R3,R3
-ADD R3,R3,#1
-ADD R7,R3,R6
-BRnp VER
-ADD R1,R1,#1
+ADD R5,R5,R4					;baja al caramelo de abajo de la seleccion 
+LDR R3,R5,#0					;guarda en R3  el color del caramelo de abajo
+NOT R3,R3						;lo nega 
+ADD R3,R3,#1					;le suma 1 para el complemento A2
+ADD R7,R3,R6					;guarda en R7 la suma (si es 0 son iguales)
+BRnp VER						;si no da 0 va a VER
+ADD R1,R1,#1					;suma 1 al contador R1 
 
-ADD R5,R5,R4
-LDR R3,R5,#0
-NOT R3,R3
-ADD R3,R3,#1
-ADD R7,R3,R6
-BRnp VER
-ADD R1,R1,#1
-
+ADD R5,R5,R4					;baja al siguiente caramelo 
+LDR R3,R5,#0					;guarda en R3  el color del caramelo de abajo
+NOT R3,R3						;lo nega 
+ADD R3,R3,#1					;le suma 1 para el complemento A2
+ADD R7,R3,R6					;guarda en R7 la suma (si es 0 son iguales)
+BRnp VER						;si no da 0 va a VER
+ADD R1,R1,#1					;suma 1 al contador R1 
 
 VER
 ADD R2,R1,R0
