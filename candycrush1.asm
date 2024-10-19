@@ -512,34 +512,37 @@ ADD R7,R3,R6					;guarda en R7 la suma (si es 0 son iguales)
 BRnp VER						;si no da 0 va a VER
 ADD R1,R1,#1					;suma 1 al contador R1 
 
-VER
-ADD R2,R1,R0
-ADD R2,R2,#-1
-BRnz VER_DERECHA
-LD R2, GUARDAR_AUX_R2
-ST R2, GUARDAR_AUX_R2
-LD R3,seleccion2gris
-ADD R2,R2,R3
-ADD R3,R0,#0
-ADD R4,R1,#0
-LD R5, salto_selec_neg
-LOOP_BORRAR_ARRIBA
-ADD R3,R3,#-1
-BRn BORRA_ABAJO
-LD R1,negro
-ADD R0,R2,#0
-JSR CREAR_CARAMELO
-ADD R2,R2,R5
-ADD R0,R2,#0
-JSR CREAR_CARAMELO
-BRnzp LOOP_BORRAR_ARRIBA
+VER								;elimina los caramelos que tienen el mismo color hacia arriba o hacia abajo
 
-BORRA_ABAJO
-LD R2, GUARDAR_AUX_R2
+ADD R2,R1,R0					;en R2 guarda la suma de los contadores
+ADD R2,R2,#-1					;resta 1  
+BRnz VER_DERECHA				;si da negativo o 0 va a VER_DERECHA
+LD R2, GUARDAR_AUX_R2			
+ST R2, GUARDAR_AUX_R2			;R2 vuelve a tener la posicion de seleccion
+LD R3,seleccion2gris			;129 (128 + 1)
+ADD R2,R2,R3					;baja al primer pixel gris del caramelo
+ADD R3,R0,#0					;en R3 guarda el contador para arriba
+ADD R4,R1,#0					;en R4 guarda el contador hacia abajo
+LD R5, salto_selec_neg			; -1920
+
+LOOP_BORRAR_ARRIBA				;borra hacia arriba sobre el contador R3 
+ADD R3,R3,#-1					;le va restando 1 
+BRn BORRA_ABAJO					;si da negativo va a BORRAR_ABAJO
+LD R1,negro						;le da el COLOR negro a R0 
+ADD R0,R2,#0					;en R0 guarda la posicion del primer pixel del caramelo
+JSR CREAR_CARAMELO				;crea caramelo con R0 (la posicion) y R1 (el color)
+ADD R2,R2,R5					;le suma a la posicion 1920 para subir 1 caramelo mas 
+ADD R0,R2,#0					;lo guarda en R0 
+JSR CREAR_CARAMELO				;crea caramelo con R0 (la posicion) y R1 (el color)
+BRnzp LOOP_BORRAR_ARRIBA		;repite el loop
+
+BORRA_ABAJO						;borra hacia abajo
+LD R2, GUARDAR_AUX_R2			;vuelve el valor R2 a la posicion inicial de la seleccion
 ST R2, GUARDAR_AUX_R2
-LD R3,seleccion2gris
-ADD R2,R2,R3
-LD R5, salto_selec
+LD R3,seleccion2gris			;129 (128 + 1)
+ADD R2,R2,R3					;baja al primer pixel gris del caramelo
+LD R5, salto_selec				;1920
+
 LOOP_BORRAR_ABAJO
 ADD R4,R4,#-1
 BRn VER_DERECHA
