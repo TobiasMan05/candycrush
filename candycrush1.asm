@@ -626,34 +626,35 @@ ADD R2,R2,R3					;primer pixel del caramelos (gris)
 ADD R3,R0,#0					;en R3 guarda el contador para la derecha
 ADD R4,R1,#0					;en R4 guarda el contador para la izquierda
 
-LOOP_BORRAR_IZQ
-LD R1,negro
-ADD R3,R3,#-1
-BRn BORRAR_DERECHA
-ADD R0,R2,#0
-JSR CREAR_CARAMELO
-ADD R2,R2,#-16
-ADD R0,R2,#0
-JSR CREAR_CARAMELO
-BRnzp LOOP_BORRAR_IZQ
+LOOP_BORRAR_IZQ					;borra hacia la izquierda
+LD R1,negro						;R1 tiene el color negro
+ADD R4,R4,#-1					;le resta 1 al contador R4
+BRn BORRAR_DERECHA				;si es negativo, va a BORRAR_DERECHA 
+ADD R0,R2,#0					;le da a R0 la posicion R2
+JSR CREAR_CARAMELO				;crea caramelo con R0 (la posicion) y R1 (el color)
+ADD R2,R2,#-16					;le resta 16 a R2
+ADD R0,R2,#0					;le da a R0 la posicion R2
+JSR CREAR_CARAMELO				;crea caramelo con R0 (la posicion) y R1 (el color)
+BRnzp LOOP_BORRAR_IZQ			;sigue el loop 
 
-BORRAR_DERECHA
-LD R2, GUARDAR_AUX_R2
+BORRAR_DERECHA					;borra hacia la derecha
+LD R2, GUARDAR_AUX_R2			;resetea el valor de R2 al de inicio de seleccion
 ST R2, GUARDAR_AUX_R2
-LD R3,seleccion2gris
-ADD R2,R2,R3
-LOOP_BORRAR_DERECHA
-ADD R4,R4,#-1
-BRn FINAL_FUNCION
-ADD R0,R2,#0
-JSR CREAR_CARAMELO
-ADD R2,R2,#15
-ADD R2,R2,#1
-ADD R0,R2,#0
-JSR CREAR_CARAMELO
-BRnzp LOOP_BORRAR_DERECHA
+LD R4,seleccion2gris			;129 (128 + 1)
+ADD R2,R2,R4					;primer pixel del caramelos (gris)
 
-FINAL_FUNCION
+LOOP_BORRAR_DERECHA				;borra hacia la derecha
+ADD R3,R3,#-1					;le resta 1 al contador R3
+BRn FINAL_FUNCION				;si da negativo va a FINAL_FUNCION
+ADD R0,R2,#0					;le da a R0 la posicion R2
+JSR CREAR_CARAMELO				;crea caramelo con R0 (la posicion) y R1 (el color)
+ADD R2,R2,#15
+ADD R2,R2,#1					;le suma 16 a R2
+ADD R0,R2,#0					;le da a R0 la posicion R2
+JSR CREAR_CARAMELO				;crea caramelo con R0 (la posicion) y R1 (el color)
+BRnzp LOOP_BORRAR_DERECHA		;sigue el loop 
+
+FINAL_FUNCION					;resetea valores 
 LD R4, SAVEEE_R4
 LD R0, SAVEEE_R0
 LD R3, SAVEEE_R3
