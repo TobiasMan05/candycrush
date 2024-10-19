@@ -586,45 +586,45 @@ ADD R7,R1,R6					;guarda en R7 la suma (si es 0 son iguales)
 BRnp VER_IZQUIERDA1				;si no da 0 va a VER_ISQUIERDA1
 ADD R0,R0,#1					;suma 1 al contador R0
 
-VER_IZQUIERDA1
-ADD R5, R5, #-16
+
+VER_IZQUIERDA1					;suma cuantos caramelos a la izquierda tiene el mismo color que el caramelo seleccionado 
+ADD R5, R5, #-16				;resta 16 
 VER_IZQUIERDA2
-ADD R5, R5, #-16
+ADD R5, R5, #-16				;resta 16 
 
-ADD R5, R5, #-16
+ADD R5, R5, #-16				;resta nuevamente 16 
 
-LD R1, negro
+LD R1, negro					;R1 tiene el color negro 
+	
+LDR R3,R5,#0					;guarda el color en R3 donde esta R5 (1 a la izquierda donde esta la seleccion)
+NOT R3,R3						;lo nega
+ADD R3,R3,#1					;le suma 1 por el complemento A2
+ADD R7,R3,R6					;guarda en R7 la suma (si es 0 son iguales)
 
-LDR R3,R5,#0
-NOT R3,R3
-ADD R3,R3,#1
-ADD R7,R3,R6
+BRnp VER2						;si no da 0 va a VER2
 
-BRnp VER2
+ADD R1,R1,#1					;suma 1 al contador R1
+ADD R5, R5, #-16				;resta 16
 
-ADD R1,R1,#1
+LDR R3,R5,#0					;guarda el color en R3 donde esta R5 
+NOT R3,R3						;lo nega
+ADD R3,R3,#1					;le suma 1 por el complemento A2
+ADD R7,R1,R6					;guarda en R7 la suma (si es 0 son iguales)
 
-ADD R5, R5, #-16
+BRnp VER2						;si no da 0 va a VER2
+ADD R1,R1,#1					;suma 1 al contador R1
 
-LDR R3,R5,#0
-NOT R3,R3
-ADD R3,R3,#1
-ADD R7,R1,R6
+VER2							;elimina los caramelos del mismo color hacia derecha o izquierda
+ADD R2,R0,R1					;en R2 guarda la suma de los contadores
+ADD R2,R2,#-1					;resta 1  
+BRnz FINAL_FUNCION				;si da 0 o negativo va a FINAL_FUNCION
 
-BRnp VER2
-ADD R1,R1,#1
-
-VER2
-ADD R2,R0,R1
-ADD R2,R2,#-1
-BRnz FINAL_FUNCION
-
-LD R2, GUARDAR_AUX_R2
+LD R2, GUARDAR_AUX_R2			;resetea el valor de R2 al de inicio de seleccion
 ST R2, GUARDAR_AUX_R2
-LD R3,seleccion2gris
-ADD R2,R2,R3
-ADD R3,R0,#0
-ADD R4,R1,#0
+LD R3,seleccion2gris			;129 (128 + 1)
+ADD R2,R2,R3					;primer pixel del caramelos (gris)
+ADD R3,R0,#0					;en R3 guarda el contador para la derecha
+ADD R4,R1,#0					;en R4 guarda el contador para la izquierda
 
 LOOP_BORRAR_IZQ
 LD R1,negro
