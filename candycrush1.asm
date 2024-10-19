@@ -460,34 +460,34 @@ ST R2, SAVEEE_R2
 ST R1, SAVEE_R1
 ST R7, SAVEEE_R7
 
-LD R5, saber_color ;para saber color
-LD R3, salto_selec_neg
-LD R4, salto_selec
+LD R5, saber_color				; para saber color 
+LD R3, salto_selec_neg			; -1920 
+LD R4, salto_selec				; 1920 
 LD R0, negro
 LD R1, negro
 
-ADD R5,R2,R5
-LDR R6,R5,#0
+ADD R5,R2,R5					;R5 esta en el color del caramelo seleccionado
+LDR R6,R5,#0					;guarda en R6 el color de R5
 ST R6, GUARDAR_AUX_R6
 ST R2, GUARDAR_AUX_R2
-LD R2,negro
+LD R2,negro						;reseta R2 a x0000
 
-ADD R5,R5,R3
+ADD R5,R5,R3					;suma R3 a R5 para estar en el color de arriba
 
-LDR R1,R5,#0
-NOT R1,R1
-ADD R1,R1,#1
-ADD R7,R1,R6
-BRnp VER_ABAJO1
-ADD R0,R0,#1
+LDR R1,R5,#0					;guarda en R1 el color de R5 
+NOT R1,R1						;lo nega 
+ADD R1,R1,#1					;le suma uno para el complemento A2
+ADD R7,R1,R6					;guarda en R7 la suma (si es 0 son iguales)
+BRnp VER_ABAJO1					;si no es cero va a VER_ABAJO1
+ADD R0,R0,#1					;suma uno al contador si el color el igual osea q R7 es 0
 
-ADD R5,R5,R3
-LDR R1,R5,#0
-NOT R1,R1
-ADD R1,R1,#1
-ADD R7,R1,R6
-BRnp VER_ABAJO2
-ADD R0,R0,#1
+ADD R5,R5,R3					;sube otro caramelo 
+LDR R1,R5,#0					;guarda en R1 el color 
+NOT R1,R1						;lo nega		
+ADD R1,R1,#1					;le suma 1 por complemento A2
+ADD R7,R1,R6					;guarda en R7 la suma (si es 0 son iguales)
+BRnp VER_ABAJO2					;si no da 0 va a VER_ABAJO2
+ADD R0,R0,#1					;suma uno al contador si R7 es 0 
 
 VER_ABAJO2
 ADD R5,R5,R4
