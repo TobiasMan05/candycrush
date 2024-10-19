@@ -543,51 +543,48 @@ LD R3,seleccion2gris			;129 (128 + 1)
 ADD R2,R2,R3					;baja al primer pixel gris del caramelo
 LD R5, salto_selec				;1920
 
-LOOP_BORRAR_ABAJO
-ADD R4,R4,#-1
-BRn VER_DERECHA
-
-ADD R0,R2,#0
-JSR CREAR_CARAMELO
-
-ADD R2,R2,R5
-ADD R0,R2,#0
-
-JSR CREAR_CARAMELO
-BRnzp LOOP_BORRAR_ABAJO
+LOOP_BORRAR_ABAJO				;borra hacia abajo sobre el contador R4
+ADD R4,R4,#-1					;le va restando 1
+BRn VER_DERECHA					;si es negativo va a VER_DERECHA 
+ADD R0,R2,#0					;en R0 guarda la posicion del primer pixel del caramelo
+JSR CREAR_CARAMELO				;crea caramelo con R0 (la posicion) y R1 (el color)
+ADD R2,R2,R5					;le suma a la posicion 1920 para bajar 1 caramelo mas 
+ADD R0,R2,#0					;lo guarda en R0
+JSR CREAR_CARAMELO				;crea caramelo con R0 (la posicion) y R1 (el color)
+BRnzp LOOP_BORRAR_ABAJO			;repite el loop
 
 VER_DERECHA
 LD R2, GUARDAR_AUX_R2
 ST R2, GUARDAR_AUX_R2
-LD R5, saber_color ;para saber color
-LD R0, negro
-LD R1, negro
-LD R3, negro
+LD R5, saber_color				;389
+LD R0, negro					;reseta a x0000
+LD R1, negro					;reseta a x0000	
+LD R3, negro					;reseta a x0000
 
-ADD R5,R2,R5
-LD R6, GUARDAR_AUX_R6
+ADD R5,R2,R5					;para saber color del mismo caramelo en donde esta 
+LD R6, GUARDAR_AUX_R6			
+
+ADD R5, R5, #15				
+ADD R5, R5, #1					;le suma 16 para ir al color de la derecha 
+
+LDR R1,R5,#0					;guarda en R1 el color de la derecha 
+NOT R1,R1						;lo nega
+ADD R1,R1,#1					;le suma 1 por el complemento A2
+ADD R7,R1,R6					;guarda en R7 la suma (si es 0 son iguales)
+
+BRnp VER_IZQUIERDA2				;si no da 0 va a VER_ISQUIERDA2
+ADD R0,R0,#1					;suma 1 al contador R0
 
 ADD R5, R5, #15
-ADD R5, R5, #1
+ADD R5, R5, #1					;suma 16 mas a la derecha a R5
 
-LDR R1,R5,#0
-NOT R1,R1
-ADD R1,R1,#1
-ADD R7,R1,R6
+LDR R1,R5,#0					;guarda en R1 el color de la derecha 
+NOT R1,R1						;lo nega
+ADD R1,R1,#1					;le suma 1 por el complemento A2
+ADD R7,R1,R6					;guarda en R7 la suma (si es 0 son iguales)
 
-BRnp VER_IZQUIERDA2
-ADD R0,R0,#1
-
-ADD R5, R5, #15
-ADD R5, R5, #1
-
-LDR R1,R5,#0
-NOT R1,R1
-ADD R1,R1,#1
-ADD R7,R1,R6
-
-BRnp VER_IZQUIERDA1
-ADD R0,R0,#1
+BRnp VER_IZQUIERDA1				;si no da 0 va a VER_ISQUIERDA1
+ADD R0,R0,#1					;suma 1 al contador R0
 
 VER_IZQUIERDA1
 ADD R5, R5, #-16
